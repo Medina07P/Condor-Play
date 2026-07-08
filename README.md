@@ -4,9 +4,9 @@
 
 **Disfruta canales en vivo, películas y series desde cualquier dispositivo Android**
 
-[![Versión](https://img.shields.io/badge/versión-2.9.5-orange?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/latest)
+[![Versión](https://img.shields.io/badge/versión-2.9.8-orange?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/latest)
 [![Plataforma](https://img.shields.io/badge/plataforma-Android%20%7C%20Android%20TV-green?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/latest)
-[![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-latest-red?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.5/app-release.apk)
+[![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-latest-red?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.8/app-release.apk)
 
 </div>
 
@@ -28,7 +28,7 @@ Compatible con teléfonos Android y **Android TV / cajas de TV**.
 ## 📲 Cómo instalar
 
 ### En teléfono Android
-1. Descarga el APK desde el botón **[⬇ Descargar APK](https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.5/app-release.apk)**
+1. Descarga el APK desde el botón **[⬇ Descargar APK](https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.8/app-release.apk)**
 2. En tu teléfono ve a **Ajustes → Seguridad → Instalar apps de fuentes desconocidas** y actívalo
 3. Abre el archivo `.apk` descargado e instala
 4. Abre la app e inicia sesión con tus credenciales

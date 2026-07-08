@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cóndor Play — Streaming sin límites</title>
+  <meta name="description" content="Cóndor Play: la aplicación IPTV más avanzada para Android TV, smartphones y PC Windows. Streaming estable, interfaz moderna y calidad sin compromisos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:        #08060a;
+      --surface:   #120b0e;
+      --glass:     rgba(255,255,255,0.04);
+      --border:    rgba(255,255,255,0.08);
+      --cyan:      #ec1b2e;
+      --cyan-dim:  #b3121f;
+      --purple:    #6e0b14;
+      --pink:      #ff5a6e;
+      --text:      #f1ebec;
+      --muted:     #8a7a7e;
+      --radius:    16px;
+      --glow:      0 0 40px rgba(236,27,46,0.18);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 99px; }
+
+    /* ─── NOISE OVERLAY ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: .4;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(6,8,16,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: padding .3s;
+    }
+    nav.scrolled { padding: .7rem 2rem; }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(236,27,46,.5);
+    }
+    .nav-logo span { color: var(--text); }
+
+    .nav-logo-img {
+      height: 42px;
+      width: auto;
+      mix-blend-mode: lighten;
+      filter: drop-shadow(0 0 10px rgba(236,27,46,.35));
+      transition: filter .2s, transform .2s;
+    }
+    .nav-logo-img:hover {
+      filter: drop-shadow(0 0 18px rgba(236,27,46,.6));
+      transform: scale(1.04);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: #000;
+      font-weight: 600;
+      font-size: .88rem;
+      padding: .55rem 1.3rem;
+      border-radius: 8px;
+      transition: box-shadow .2s, transform .15s;
+    }
+    .nav-cta:hover {
+      box-shadow: 0 0 24px rgba(236,27,46,.5);
+      transform: translateY(-1px);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transition: .3s;
+    }
+
+    /* ─── MOBILE NAV ─────────────────────────────────────── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(6,8,16,0.97);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      z-index: 99;
+      padding: 1.5rem 2rem;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text); font-weight: 500; }
+    .mobile-menu a:hover { color: var(--cyan); }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      overflow: hidden;
+    }
+
+    /* animated radial background orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      opacity: .55;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 650px; height: 650px; background: radial-gradient(circle, rgba(236,27,46,.32), transparent 70%); top: -100px; left: -100px; }
+    .orb-2 { width: 550px; height: 550px; background: radial-gradient(circle, rgba(110,11,20,.4), transparent 70%); bottom: 0; right: -80px; animation-delay: -6s; }
+    .orb-3 { width: 320px; height: 320px; background: radial-gradient(circle, rgba(255,90,110,.25), transparent 70%); top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: -3s; }
+
+    @keyframes drift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(30px,20px) scale(1.05); }
+    }
+
+    /* grid lines */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(236,27,46,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(236,27,46,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(236,27,46,.1);
+      border: 1px solid rgba(236,27,46,.25);
+      border-radius: 99px;
+      padding: .3rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--cyan);
+      letter-spacing: .05em;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp .6s .1s both;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* logo principal del hero */
+    .hero-logo-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeUp .6s .2s both;
+    }
+    .hero-logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -20% -10%;
+      background: radial-gradient(circle, rgba(236,27,46,.16), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .hero-logo {
+      width: clamp(260px, 40vw, 460px);
+      mix-blend-mode: lighten;
+      filter: drop-shadow(0 0 60px rgba(236,27,46,.45));
+    }
+
+    .hero-sub {
+      max-width: 600px;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      font-weight: 300;
+      margin: 1.5rem auto 0;
+      position: relative; z-index: 1;
+      animation: fadeUp .6s .3s both;
+    }
+
+    /* ─── PLATFORM PILLS (hero) ──────────────────────────── */
+    .platform-pills {
+      display: flex;
+      gap: .6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+      position: relative; z-index: 1;
+      animation: fadeUp .6s .35s both;
+    }
+    .platform-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: .25rem .75rem;
+      font-size: .78rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+    }
+    .platform-pill .pill-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp .6s .4s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: .85rem 2rem;
+      border-radius: 10px;
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+      pointer-events: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 40px rgba(236,27,46,.45);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--glass);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: .85rem 2rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      border-color: rgba(236,27,46,.4);
+      background: rgba(236,27,46,.07);
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 3.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp .6s .5s both;
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .meta-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--cyan);
+      line-height: 1;
+    }
+    .meta-label { font-size: .8rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+
+    .meta-divider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── MARQUEE ────────────────────────────────────────── */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: .85rem 0;
+      position: relative; z-index: 1;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .marquee-item span { color: var(--cyan); }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ─── SECTION BASE ───────────────────────────────────── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 2rem; }
+    .section-pad { padding: 7rem 0; }
+
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--cyan);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: 2px;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      max-width: 520px;
+      font-size: 1.05rem;
+    }
+
+    /* ─── FEATURES ───────────────────────────────────────── */
+    .features-header { max-width: 560px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .feature-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .feature-card:hover {
+      border-color: rgba(236,27,46,.3);
+      transform: translateY(-5px);
+      box-shadow: var(--glow);
+    }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(236,27,46,.08);
+      border: 1px solid rgba(236,27,46,.15);
+      border-radius: 12px;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .feature-name {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: .5rem;
+    }
+    .feature-desc { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────── */
+    .hiw-bg {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .hiw-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+      position: relative;
+    }
+    .hiw-grid::before {
+      content: '';
+      position: absolute;
+      top: 40px; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: .4;
+    }
+    .hiw-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+    .step-num {
+      width: 80px; height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid rgba(236,27,46,.3);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--cyan);
+      box-shadow: 0 0 30px rgba(236,27,46,.15);
+      position: relative;
+    }
+    .step-title { font-weight: 600; font-size: 1.05rem; }
+    .step-desc { color: var(--muted); font-size: .9rem; }
+
+    /* ─── PRICING ────────────────────────────────────────── */
+    .pricing-header { text-align: center; }
+    .pricing-header .section-sub { margin: 0 auto; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+      align-items: start;
+    }
+    .pricing-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      backdrop-filter: blur(10px);
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 60px rgba(236,27,46,.1);
+    }
+    .pricing-card.featured {
+      border-color: var(--cyan);
+      background: linear-gradient(145deg, rgba(236,27,46,.06), rgba(110,11,20,.06));
+      box-shadow: 0 0 0 1px rgba(236,27,46,.2), var(--glow);
+    }
+    .pricing-card.featured:hover { transform: translateY(-9px); }
+
+    .plan-badge-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .plan-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    .plan-popular {
+      background: var(--cyan);
+      color: #000;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+      border-radius: 99px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: flex-end;
+      gap: .3rem;
+      margin-bottom: .25rem;
+    }
+    .price-currency { font-size: 1.2rem; color: var(--muted); align-self: flex-start; margin-top: .6rem; }
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.8rem;
+      line-height: 1;
+      color: var(--text);
+    }
+    .price-period { color: var(--muted); font-size: .85rem; margin-bottom: .5rem; }
+    .plan-saving {
+      display: inline-block;
+      background: rgba(236,27,46,.1);
+      color: var(--cyan);
+      font-size: .75rem;
+      font-family: 'DM Mono', monospace;
+      border-radius: 6px;
+      padding: .2rem .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .plan-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.25rem 0;
+    }
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      margin-bottom: 2rem;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .93rem;
+      color: var(--text);
+    }
+    .plan-features li .check {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(236,27,46,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: .65rem;
+      color: var(--cyan);
+    }
+
+    .btn-plan {
+      width: 100%;
+      padding: .85rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-plan-outline {
+      background: transparent;
+      border: 1px solid rgba(236,27,46,.35);
+      color: var(--cyan);
+    }
+    .btn-plan-outline:hover {
+      background: rgba(236,27,46,.07);
+      transform: translateY(-2px);
+    }
+    .btn-plan-filled {
+      background: var(--cyan);
+      color: #000;
+    }
+    .btn-plan-filled:hover {
+      box-shadow: 0 6px 30px rgba(236,27,46,.45);
+      transform: translateY(-2px);
+    }
+
+    /* ─── DOWNLOAD SECTION ───────────────────────────────── */
+    .download-section {
+      text-align: center;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .download-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(236,27,46,.06), rgba(110,11,20,.08));
+      border: 1px solid rgba(236,27,46,.2);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      max-width: 680px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .download-card::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(236,27,46,.12), transparent 70%);
+      pointer-events: none;
+    }
+    .download-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.25rem;
+      position: relative; z-index: 1;
+    }
+    .download-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 2px;
+      margin-bottom: .5rem;
+      position: relative; z-index: 1;
+    }
+    .download-sub {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─── DOWNLOAD BUTTONS PAIR ──────────────────────────── */
+    .download-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative; z-index: 1;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: .95rem 2rem;
+      border-radius: 12px;
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Android — filled cyan */
+    .btn-download-android {
+      background: var(--cyan);
+      color: #000;
+    }
+    .btn-download-android::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+      pointer-events: none;
+    }
+    .btn-download-android:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 50px rgba(236,27,46,.5);
+    }
+
+    /* Windows — outlined */
+    .btn-download-windows {
+      background: rgba(180,15,30,0.10);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(10px);
+    }
+    .btn-download-windows:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: rgba(236,27,46,.4);
+      background: rgba(236,27,46,.07);
+      box-shadow: 0 10px 40px rgba(236,27,46,.2);
+      
+    }
+
+    .btn-download .btn-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .btn-download .btn-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.2;
+    }
+    .btn-download .btn-text small {
+      font-size: .7rem;
+      font-weight: 400;
+      opacity: .75;
+      font-family: 'DM Mono', monospace;
+    }
+    .btn-download .btn-text strong { font-size: 1rem; }
+
+    .version-tags {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.4rem;
+      position: relative; z-index: 1;
+    }
+    .version-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--cyan);
+      opacity: .65;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 2rem;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-brand .nav-logo { font-size: 1.6rem; display: inline-block; margin-bottom: .75rem; }
+    .footer-brand .nav-logo-img { height: 36px; margin-bottom: .75rem; }
+    .footer-brand p { color: var(--muted); font-size: .9rem; max-width: 240px; }
+
+    .footer-col h4 {
+      font-weight: 600;
+      font-size: .9rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .footer-col ul a { color: var(--muted); font-size: .88rem; transition: color .2s; }
+    .footer-col ul a:hover { color: var(--cyan); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p { color: var(--muted); font-size: .83rem; }
+    .footer-bottom a { color: var(--muted); font-size: .83rem; transition: color .2s; }
+    .footer-bottom a:hover { color: var(--cyan); }
+    .footer-github {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    /* ─── SCROLL ANIMATIONS ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s, transform .7s;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ─── TOAST ──────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--surface);
+      border: 1px solid rgba(236,27,46,.3);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-size: .9rem;
+      color: var(--text);
+      box-shadow: var(--glow);
+      z-index: 999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: .4s;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .features-grid,
+      .hiw-grid,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .hiw-grid::before { display: none; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .pricing-card.featured { order: -1; }
+    }
+    @media (max-width: 600px) {
+      .footer-inner { grid-template-columns: 1fr; }
+      .hero { padding: 7rem 1.25rem 4rem; }
+      .section-pad { padding: 4.5rem 0; }
+      .hero-meta { gap: 1.5rem; }
+      .meta-divider { display: none; }
+      .download-card { padding: 2.5rem 1.5rem; }
+      .download-btns { flex-direction: column; align-items: stretch; }
+      .btn-download { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#hero" aria-label="Cóndor Play"><img src="logo.jpeg" alt="Cóndor Play" class="nav-logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="#features">Características</a></li>
+      <li><a href="#how">¿Cómo funciona?</a></li>
+      <li><a href="#pricing">Planes</a></li>
+    </ul>
+    <a href="#download" class="nav-cta">Descargar gratis</a>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#features" onclick="closeMenu()">Características</a>
+    <a href="#how" onclick="closeMenu()">¿Cómo funciona?</a>
+    <a href="#pricing" onclick="closeMenu()">Planes</a>
+    <a href="#download" class="btn-primary" style="justify-content:center" onclick="closeMenu()">Descargar gratis</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      v1.3.34 - v2.9.8 — Ahora disponible · Android &amp; Windows
+    </div>
+
+    <div class="hero-logo-wrap">
+      <img src="logo.jpeg" alt="Cóndor Play" class="hero-logo">
+    </div>
+
+    <p class="hero-sub">
+      El reproductor IPTV más rápido y elegante para Android TV, smartphones y PC Windows.
+      Streaming estable, interfaz cinética y actualizaciones continuas.
+    </p>
+
+    <!-- Platform compatibility pills -->
+    <div class="platform-pills">
+      <span class="platform-pill"><span class="pill-dot"></span>🤖 Android &amp; TV</span>
+      <span class="platform-pill"><span class="pill-dot"></span>🪟 Windows 10/11</span>
+      <span class="platform-pill"><span class="pill-dot"></span>📺 TV Box</span>
+    </div>
+
+    <div class="hero-actions">
+      <a href="https://github.com/Medina07P/myconnect_iptv/releases/download/v1.3.34tv/app-release.apk" class="btn-primary">
+        🤖 Android APK
+      </a>
+      <a href="https://github.com/Medina07P/myconnect_iptv/releases/download/v1.3.34tv/app-release.apk" class="btn-primary">
+        📺​ Android TV APK
+      </a>
+      <a href="https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.8/myconnect-2.9.8.exe" class="btn-secondary">
+        🪟 Windows EXE
+      </a>
+      <a href="#pricing" class="btn-secondary">
+        Ver planes →
+      </a>
+    </div>
+
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-number">10K+</span>
+        <span class="meta-label">Usuarios activos</span>
+      </div>
+      <div class="meta-divider"></div>
+      <div class="meta-item">
+        <span class="meta-number">99.9%</span>
+        <span class="meta-label">Uptime</span>
+      </div>
+      <div class="meta-divider"></div>
+      <div class="meta-item">
+        <span class="meta-number">4K</span>
+        <span class="meta-label">Resolución máx.</span>
+      </div>
+      <div class="meta-divider"></div>
+      <div class="meta-item">
+        <span class="meta-number">v2.9</span>
+        <span class="meta-label">Última versión</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track" id="marquee-track">
+      <span class="marquee-item">🔴 <span>STREAMING EN VIVO</span></span>
+      <span class="marquee-item">📺 <span>ANDROID TV</span></span>
+      <span class="marquee-item">🪟 <span>WINDOWS PC</span></span>
+      <span class="marquee-item">🎬 <span>PELÍCULAS & SERIES</span></span>
+      <span class="marquee-item">⚡ <span>BAJA LATENCIA</span></span>
+      <span class="marquee-item">🔒 <span>CONEXIÓN SEGURA</span></span>
+      <span class="marquee-item">🌐 <span>CANALES GLOBALES</span></span>
+      <span class="marquee-item">📱 <span>ANDROID & TV</span></span>
+      <span class="marquee-item">🎯 <span>INTERFAZ INTUITIVA</span></span>
+      <span class="marquee-item">🔴 <span>STREAMING EN VIVO</span></span>
+      <span class="marquee-item">📺 <span>ANDROID TV</span></span>
+      <span class="marquee-item">🪟 <span>WINDOWS PC</span></span>
+      <span class="marquee-item">🎬 <span>PELÍCULAS & SERIES</span></span>
+      <span class="marquee-item">⚡ <span>BAJA LATENCIA</span></span>
+      <span class="marquee-item">🔒 <span>CONEXIÓN SEGURA</span></span>
+      <span class="marquee-item">🌐 <span>CANALES GLOBALES</span></span>
+      <span class="marquee-item">📱 <span>ANDROID & TV</span></span>
+      <span class="marquee-item">🎯 <span>INTERFAZ INTUITIVA</span></span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section-pad" id="features">
+    <div class="container">
+      <div class="features-header">
+        <p class="section-eyebrow">Características</p>
+        <h2 class="section-title">Todo lo que necesitas<br>en una sola app</h2>
+        <p class="section-sub">Diseñada para exigentes. Cóndor Play combina velocidad, estabilidad y una experiencia visual premium en Android y Windows.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-name">Reproductor ultrarrápido</div>
+          <p class="feature-desc">Motor de reproducción optimizado con soporte para HLS, MPEG-TS y streams de alta velocidad sin buffering.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">📺</div>
+          <div class="feature-name">Android TV, Móvil &amp; PC</div>
+          <p class="feature-desc">Navegación perfecta con control remoto en Android TV. Interfaz adaptada para pantallas grandes, smartphones y escritorio Windows.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-name">Streaming estable</div>
+          <p class="feature-desc">Reconexión automática, buffer inteligente y failover de streams para que nunca pierdas lo que estás viendo.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">🎬</div>
+          <div class="feature-name">VOD integrado</div>
+          <p class="feature-desc">Películas y series con controles de reproducción avanzados: seek, velocidad, pantalla completa y más.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">✨</div>
+          <div class="feature-name">Interfaz cinética</div>
+          <p class="feature-desc">Diseño oscuro moderno con animaciones fluidas. Navega canales y categorías de forma rápida e intuitiva.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon">🔄</div>
+          <div class="feature-name">Actualizaciones continuas</div>
+          <p class="feature-desc">Mejoras frecuentes, nuevas funciones y correcciones publicadas en GitHub para mantenerte siempre al día.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section-pad hiw-bg" id="how">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:.5rem">
+        <p class="section-eyebrow">Instalación</p>
+        <h2 class="section-title">En 3 pasos, ya estás viendo</h2>
+      </div>
+      <div class="hiw-grid">
+        <div class="hiw-step reveal">
+          <div class="step-num">1</div>
+          <div class="step-title">Descarga para tu plataforma</div>
+          <p class="step-desc">Elige el APK para Android / TV Box o el instalador .exe para Windows y descárgalo directamente en tu dispositivo.</p>
+        </div>
+        <div class="hiw-step reveal reveal-delay-1">
+          <div class="step-num">2</div>
+          <div class="step-title">Instala y activa</div>
+          <p class="step-desc">En Android, permite fuentes desconocidas e instala. En Windows, ejecuta el instalador. Activa tu suscripción con el código recibido.</p>
+        </div>
+        <div class="hiw-step reveal reveal-delay-2">
+          <div class="step-num">3</div>
+          <div class="step-title">¡Disfruta el streaming!</div>
+          <p class="step-desc">Carga tu lista M3U y empieza a ver canales en vivo, películas y series al instante desde cualquier dispositivo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section-pad" id="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <p class="section-eyebrow">Planes</p>
+        <h2 class="section-title">Elige tu plan ideal</h2>
+        <p class="section-sub">Sin contratos ocultos ni sorpresas. Todos los planes incluyen acceso completo a Cóndor Play.</p>
+      </div>
+
+      <div class="pricing-grid">
+
+        <!-- MENSUAL -->
+        <div class="pricing-card reveal">
+          <div class="plan-badge-wrap">
+            <span class="plan-label">Plan Mensual</span>
+          </div>
+          <div class="plan-price">
+            <span class="price-currency">$</span>
+            <span class="price-amount">3 USD / 10.000 COP</span>
+          </div>
+          <div class="price-period">/ mes · pago mensual</div>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 2 dispositivos simultáneos</li>
+            <li><span class="check">✓</span> Canales en vivo HD</li>
+            <li><span class="check">✓</span> VOD — películas y series</li>
+            <li><span class="check">✓</span> Soporte por email</li>
+            <li><span class="check">✓</span> Actualizaciones incluidas</li>
+          </ul>
+          <button class="btn-plan btn-plan-outline" onclick="showToast('💳 Redirigiendo al pago mensual...')">Comprar mensual</button>
+        </div>
+
+        <!-- TRIMESTRAL (Featured) -->
+        <div class="pricing-card featured reveal reveal-delay-1">
+          <div class="plan-badge-wrap">
+            <span class="plan-label">Plan Trimestral</span>
+            <span class="plan-popular">Más popular</span>
+          </div>
+          <div class="plan-price">
+            <span class="price-currency">$</span>
+            <span class="price-amount">7.56 USD / 26.200 COP</span>
+          </div>
+          <div class="price-period">/ 3 meses · <s style="opacity:.45">$9/30.000</s></div>
+          <span class="plan-saving">AHORRAS $1.44/4.800 — 16% OFF</span>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 2 dispositivos simultáneos</li>
+            <li><span class="check">✓</span> Canales en vivo FHD &amp; 4K</li>
+            <li><span class="check">✓</span> VOD completo + EPG</li>
+            <li><span class="check">✓</span> Soporte prioritario</li>
+            <li><span class="check">✓</span> Actualizaciones anticipadas</li>
+            <li><span class="check">✓</span> Sin anuncios</li>
+          </ul>
+          <button class="btn-plan btn-plan-filled" onclick="showToast('💳 Redirigiendo al pago trimestral...')">Comprar trimestral</button>
+        </div>
+
+        <!-- ANUAL -->
+        <div class="pricing-card reveal reveal-delay-2">
+          <div class="plan-badge-wrap">
+            <span class="plan-label">Plan Anual</span>
+          </div>
+          <div class="plan-price">
+            <span class="price-currency">$</span>
+            <span class="price-amount">22.68 USD / 75600 COP</span>
+          </div>
+          <div class="price-period">/ año · <s style="opacity:.45">$36/120.000</s></div>
+          <span class="plan-saving">AHORRAS $13.32 / 44.000 — 37% OFF</span>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 3 dispositivos simultáneos</li>
+            <li><span class="check">✓</span> Canales en vivo 4K UHD</li>
+            <li><span class="check">✓</span> VOD ilimitado + EPG</li>
+            <li><span class="check">✓</span> Soporte 24/7 prioritario</li>
+            <li><span class="check">✓</span> Beta de nuevas funciones</li>
+            <li><span class="check">✓</span> Sin anuncios para siempre</li>
+          </ul>
+          <button class="btn-plan btn-plan-outline" onclick="showToast('💳 Redirigiendo al pago anual...')">Comprar anual</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section class="section-pad download-section" id="download">
+    <div class="container" style="display:flex; flex-direction:column; align-items:center">
+      <p class="section-eyebrow" style="margin-bottom:3rem">Descarga</p>
+      <div class="download-card reveal">
+        <div class="download-icon">📲</div>
+        <h2 class="download-title">Cóndor Play</h2>
+        <p class="download-sub">Disponible para Android y Windows. Compatible con teléfonos, tablets, Android TV Box y PC de escritorio.</p>
+
+        <!-- ── DUAL DOWNLOAD BUTTONS ── -->
+        <div class="download-btns">
+
+          <!-- Android -->
+          <a
+            href="https://github.com/Medina07P/myconnect_iptv/releases/download/v1.3.34tv/app-release.apk"
+            class="btn-download btn-download-android"
+            download
+          >
+            <span class="btn-icon">🤖</span>
+            <span class="btn-text">
+              <small>Descargar para</small>
+              <strong>Android APK</strong>
+            </span>
+          </a>
+          <!-- Android TV -->
+          <a
+            href="https://github.com/Medina07P/myconnect_iptv/releases/download/v1.3.34tv/app-release.apk"
+            class="btn-download btn-download-android"
+            download
+          >
+            <span class="btn-icon">📺</span>
+            <span class="btn-text">
+              <small>Descargar para</small>
+              <strong>Android TV APK</strong>
+            </span>
+          </a>
+
+
+          <!-- Windows -->
+          <a
+            href="https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.8/myconnect-2.9.8.exe"
+            class="btn-download btn-download-windows"
+            download
+          >
+            <span class="btn-icon">🪟</span>
+            <span class="btn-text">
+              <small>Descargar para</small>
+              <strong>Windows EXE</strong>
+            </span>
+          </a>
+
+        </div>
+
+        <!-- Version tags -->
+        <div class="version-tags">
+          <span class="version-tag">Android v1.3.34 · Android 7.0+ · ~40 MB</span>
+          <span class="version-tag">Windows v2.9.8 · Win 10/11 · 64-bit</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="logo.jpeg" alt="Cóndor Play" class="nav-logo-img">
+          <p>La aplicación IPTV más moderna para Android TV, smartphones y Windows. Streaming sin límites.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Producto</h4>
+          <ul>
+            <li><a href="#features">Características</a></li>
+            <li><a href="#pricing">Planes y precios</a></li>
+            <li><a href="#download">Descargar APK / EXE</a></li>
+            <li><a href="#how">¿Cómo instalar?</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Proyecto</h4>
+          <ul>
+            <li><a href="https://github.com/Medina07P/myconnect_iptv" target="_blank" rel="noopener">GitHub →</a></li>
+            <li><a href="https://github.com/Medina07P/myconnect_iptv/releases" target="_blank" rel="noopener">Releases</a></li>
+            <li><a href="https://github.com/Medina07P/myconnect_iptv/issues" target="_blank" rel="noopener">Reportar bug</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Cóndor Play. Todos los derechos reservados.</p>
+        <a href="https://github.com/Medina07P/myconnect_iptv" target="_blank" rel="noopener" class="footer-github">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span>🔒</span>
+    <span id="toast-msg">Procesando...</span>
+  </div>
+
+  <script>
+    /* ── NAVBAR SCROLL ─────────────────────────────────── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ── HAMBURGER ─────────────────────────────────────── */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMenu() { mobileMenu.classList.remove('open'); }
+    document.addEventListener('click', e => {
+      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    /* ── SCROLL REVEAL ─────────────────────────────────── */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    /* ── TOAST ─────────────────────────────────────────── */
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    /* ── SMOOTH ANCHOR SCROLL ──────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
