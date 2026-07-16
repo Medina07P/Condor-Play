@@ -1,0 +1,165 @@
+name: Actualizar versión
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      android:
+        description: 'Versión Android (ej: 1.3.42tv) — dejar vacío si no cambia'
+        required: false
+        type: string
+      windows:
+        description: 'Versión Windows (ej: 3.8.0) — dejar vacío si no cambia'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-version
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determinar versiones
+        id: vars
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          TAG: ${{ github.event.release.tag_name }}
+          PRERELEASE: ${{ github.event.release.prerelease }}
+          INPUT_ANDROID: ${{ inputs.android }}
+          INPUT_WINDOWS: ${{ inputs.windows }}
+        run: |
+          android=""
+          windows=""
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          if [ "$EVENT_NAME" = "release" ]; then
+            if [ "$PRERELEASE" = "true" ]; then
+              echo "⚠️ Pre-release \`$TAG\` ignorado: solo los releases completos actualizan la página." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            if [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+tv)$ ]]; then
+              android="${BASH_REMATCH[1]}"
+            elif [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+              windows="${BASH_REMATCH[1]}"
+            else
+              echo "⚠️ El tag \`$TAG\` no coincide con \`vX.Y.Ztv\` (Android) ni \`vX.Y.Z\` (Windows). No se actualiza nada." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          else
+            android="$INPUT_ANDROID"
+            windows="$INPUT_WINDOWS"
+            if [ -z "$android" ] && [ -z "$windows" ]; then
+              echo "::error::Debes indicar al menos una versión (android o windows)."
+              exit 1
+            fi
+          fi
+          {
+            echo "skip=false"
+            echo "android=$android"
+            echo "windows=$windows"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verificar asset del release
+        if: steps.vars.outputs.skip == 'false' && github.event_name == 'release'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+          ANDROID: ${{ steps.vars.outputs.android }}
+          WINDOWS: ${{ steps.vars.outputs.windows }}
+        run: |
+          if [ -n "$ANDROID" ]; then
+            expected="app-release.apk"
+          else
+            expected="condorplay-$WINDOWS.exe"
+          fi
+          assets=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" --jq '.assets[].name')
+          if ! grep -qxF "$expected" <<< "$assets"; then
+            echo "::error::El release $TAG no contiene el asset esperado '$expected'. Assets encontrados: $(tr '\n' ' ' <<< "$assets")"
+            exit 1
+          fi
+          echo "✅ Asset \`$expected\` encontrado en el release \`$TAG\`." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Checkout de main
+        if: steps.vars.outputs.skip == 'false'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Leer versiones actuales
+        if: steps.vars.outputs.skip == 'false'
+        id: before
+        shell: bash
+        run: |
+          {
+            echo "android=$(grep -oP 'releases/download/v\K[0-9.]+tv(?=/app-release\.apk)' index.html | head -1)"
+            echo "windows=$(grep -oP 'releases/download/v\K[0-9.]+(?=/condorplay-)' index.html | head -1)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Actualizar archivos con update-version.ps1
+        if: steps.vars.outputs.skip == 'false'
+        shell: pwsh
+        env:
+          ANDROID: ${{ steps.vars.outputs.android }}
+          WINDOWS: ${{ steps.vars.outputs.windows }}
+        run: |
+          $params = @{}
+          if ($env:ANDROID) { $params.Android = $env:ANDROID }
+          if ($env:WINDOWS) { $params.Windows = $env:WINDOWS }
+          ./update-version.ps1 @params
+
+      - name: Commit y push
+        if: steps.vars.outputs.skip == 'false'
+        shell: bash
+        env:
+          ANDROID: ${{ steps.vars.outputs.android }}
+          WINDOWS: ${{ steps.vars.outputs.windows }}
+          OLD_ANDROID: ${{ steps.before.outputs.android }}
+          OLD_WINDOWS: ${{ steps.before.outputs.windows }}
+        run: |
+          if git diff --quiet -- index.html README.md _redirects; then
+            echo "ℹ️ Sin cambios: la página ya tenía estas versiones (Android \`$OLD_ANDROID\`, Windows \`$OLD_WINDOWS\`)." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html README.md _redirects
+          if [ -n "$ANDROID" ] && [ -n "$WINDOWS" ]; then
+            msg="chore: actualiza versión Android a v$ANDROID y Windows a v$WINDOWS"
+          elif [ -n "$ANDROID" ]; then
+            msg="chore: actualiza versión Android a v$ANDROID"
+          else
+            msg="chore: actualiza versión Windows a v$WINDOWS"
+          fi
+          git commit -m "$msg"
+          git pull --rebase origin main
+          git push origin main
+          {
+            echo "## ✅ Página actualizada"
+            [ -n "$ANDROID" ] && echo "- Android: \`$OLD_ANDROID\` → \`$ANDROID\`"
+            [ -n "$WINDOWS" ] && echo "- Windows: \`$OLD_WINDOWS\` → \`$WINDOWS\`"
+            echo "- Archivos: \`index.html\`, \`README.md\`, \`_redirects\`"
+            echo "- Cloudflare Pages redesplegará automáticamente con este push."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Avisar si el repo es privado
+        if: always() && steps.vars.outputs.skip == 'false'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          private=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private)
+          if [ "$private" = "true" ]; then
+            {
+              echo "## ⚠️ El repo es PRIVADO"
+              echo "Los links de descarga de los releases devuelven **404** al público."
+              echo "Hazlo público en **Settings → Danger Zone → Change visibility** para que las descargas funcionen."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
