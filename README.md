@@ -1,34 +1,37 @@
 <div align="center">
 
-# MYCONNECT IPTV PRO
+<img src="logo.jpeg" alt="Cóndor Play" width="220" />
 
-**Disfruta canales en vivo, películas y series desde cualquier dispositivo Android**
+# CÓNDOR PLAY
 
-[![Versión](https://img.shields.io/badge/versión-2.9.8-orange?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/latest)
-[![Plataforma](https://img.shields.io/badge/plataforma-Android%20%7C%20Android%20TV-green?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/latest)
-[![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-latest-red?style=flat-square)](https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.8/app-release.apk)
+**Disfruta canales en vivo, películas y series en Android, Android TV y Windows**
+
+[![Android](https://img.shields.io/badge/Android-v1.3.41-green?style=flat-square&logo=android&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.41tv/app-release.apk)
+[![Windows](https://img.shields.io/badge/Windows-v3.7.0-blue?style=flat-square&logo=windows&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v3.7.0/condorplay-3.7.0.exe)
+[![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-Android-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.41tv/app-release.apk)
+[![Descargar EXE](https://img.shields.io/badge/⬇%20Descargar%20EXE-Windows-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v3.7.0/condorplay-3.7.0.exe)
 
 </div>
 
 ---
 
-## 📺 ¿Qué es MYCONNECT IPTV PRO?
+## 📺 ¿Qué es Cóndor Play?
 
-MYCONNECT es una aplicación de streaming que te permite ver:
+Cóndor Play es una aplicación de streaming que te permite ver:
 
-- 📡 **Canales en vivo** — nacionales e internacionales
+- 📡 **Canales en vivo** — nacionales e internacionales, con guía de programación (EPG)
 - 🎬 **Películas** — catálogo actualizado con búsqueda y favoritos
 - 📺 **Series** — con selector de temporadas y episodios, y progreso guardado
 - ▶️ **Continuar viendo** — retoma exactamente donde lo dejaste
 
-Compatible con teléfonos Android y **Android TV / cajas de TV**.
+Compatible con teléfonos Android, **Android TV / cajas de TV** y **PC Windows 10/11**.
 
 ---
 
 ## 📲 Cómo instalar
 
 ### En teléfono Android
-1. Descarga el APK desde el botón **[⬇ Descargar APK](https://github.com/Medina07P/myconnect_iptv/releases/download/v2.9.8/app-release.apk)**
+1. Descarga el APK: **[⬇ Descargar APK](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.41tv/app-release.apk)**
 2. En tu teléfono ve a **Ajustes → Seguridad → Instalar apps de fuentes desconocidas** y actívalo
 3. Abre el archivo `.apk` descargado e instala
 4. Abre la app e inicia sesión con tus credenciales
@@ -37,10 +40,17 @@ Compatible con teléfonos Android y **Android TV / cajas de TV**.
 1. Instala **Downloader** desde la Play Store de tu TV
 2. Abre Downloader y escribe esta URL:
    ```
-   https://github.com/Medina07P/myconnect_iptv/releases/latest/download/app-release.apk
+   https://github.com/Medina07P/Condor-Play/releases/download/v1.3.41tv/app-release.apk
    ```
 3. Descarga e instala
 4. Navega con el control remoto — toda la app es compatible con D-pad
+
+### En PC Windows
+1. Descarga el instalador: **[⬇ Descargar EXE](https://github.com/Medina07P/Condor-Play/releases/download/v3.7.0/condorplay-3.7.0.exe)**
+2. Ejecuta `condorplay-3.7.0.exe` y sigue el asistente de instalación
+3. Abre la app e inicia sesión con tus credenciales
+
+> Requiere Windows 10/11 de 64 bits.
 
 ---
 
@@ -61,7 +71,7 @@ Contáctanos por WhatsApp y te indicamos los métodos de pago disponibles
 
 <div align="center">
 
-### 📱 [+57 301 451 8350](https://wa.me/573014518350?text=Hola%20MYCONNECT%2C%20quiero%20adquirir%20una%20suscripci%C3%B3n%20IPTV%20PRO)
+### 📱 [+57 301 451 8350](https://wa.me/573014518350?text=Hola%20C%C3%B3ndor%20Play%2C%20quiero%20adquirir%20una%20suscripci%C3%B3n)
 
 </div>
 
@@ -73,17 +83,17 @@ Al contactarnos indícanos tu nombre, el plan que deseas y tu correo para crear 
 
 ¿Problemas con la app, tu cuenta o la reproducción?
 
-📩 **WhatsApp: [+57 301 451 8350](https://wa.me/573014518350?text=Hola%20MYCONNECT%2C%20necesito%20soporte%20t%C3%A9cnico)**
+📩 **WhatsApp: [+57 301 451 8350](https://wa.me/573014518350?text=Hola%20C%C3%B3ndor%20Play%2C%20necesito%20soporte%20t%C3%A9cnico)**
 
 ---
 
 ## ⚠️ Aviso legal
 
 Esta aplicación es de uso privado y requiere credenciales de acceso.  
-La distribución no autorizada del APK o las credenciales está prohibida.
+La distribución no autorizada del APK, el instalador o las credenciales está prohibida.
 
 ---
 
 <div align="center">
-MYCONNECT IPTV PRO © 2026
+Cóndor Play © 2026
 </div>
