@@ -7,9 +7,9 @@
 **Disfruta canales en vivo, películas y series en Android, Android TV y Windows**
 
 [![Android](https://img.shields.io/badge/Android-v1.3.41-green?style=flat-square&logo=android&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.41tv/app-release.apk)
-[![Windows](https://img.shields.io/badge/Windows-v3.7.0-blue?style=flat-square&logo=windows&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v3.7.0/condorplay-3.7.0.exe)
+[![Windows](https://img.shields.io/badge/Windows-v9.9.9-blue?style=flat-square&logo=windows&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v9.9.9/condorplay-9.9.9.exe)
 [![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-Android-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.41tv/app-release.apk)
-[![Descargar EXE](https://img.shields.io/badge/⬇%20Descargar%20EXE-Windows-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v3.7.0/condorplay-3.7.0.exe)
+[![Descargar EXE](https://img.shields.io/badge/⬇%20Descargar%20EXE-Windows-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v9.9.9/condorplay-9.9.9.exe)
 
 </div>
 
@@ -46,8 +46,8 @@ Compatible con teléfonos Android, **Android TV / cajas de TV** y **PC Windows 1
 4. Navega con el control remoto — toda la app es compatible con D-pad
 
 ### En PC Windows
-1. Descarga el instalador: **[⬇ Descargar EXE](https://github.com/Medina07P/Condor-Play/releases/download/v3.7.0/condorplay-3.7.0.exe)**
-2. Ejecuta `condorplay-3.7.0.exe` y sigue el asistente de instalación
+1. Descarga el instalador: **[⬇ Descargar EXE](https://github.com/Medina07P/Condor-Play/releases/download/v9.9.9/condorplay-9.9.9.exe)**
+2. Ejecuta `condorplay-9.9.9.exe` y sigue el asistente de instalación
 3. Abre la app e inicia sesión con tus credenciales
 
 > Requiere Windows 10/11 de 64 bits.
