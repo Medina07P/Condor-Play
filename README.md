@@ -6,9 +6,9 @@
 
 **Disfruta canales en vivo, películas y series en Android, Android TV y Windows**
 
-[![Android](https://img.shields.io/badge/Android-v1.3.44-green?style=flat-square&logo=android&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.44tv/app-release.apk)
+[![Android](https://img.shields.io/badge/Android-v1.3.46-green?style=flat-square&logo=android&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.46tv/app-release.apk)
 [![Windows](https://img.shields.io/badge/Windows-v3.8.1-blue?style=flat-square&logo=windows&logoColor=white)](https://github.com/Medina07P/Condor-Play/releases/download/v3.8.1/condorplay-3.8.1.exe)
-[![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-Android-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.44tv/app-release.apk)
+[![Descargar APK](https://img.shields.io/badge/⬇%20Descargar%20APK-Android-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.46tv/app-release.apk)
 [![Descargar EXE](https://img.shields.io/badge/⬇%20Descargar%20EXE-Windows-red?style=flat-square)](https://github.com/Medina07P/Condor-Play/releases/download/v3.8.1/condorplay-3.8.1.exe)
 
 </div>
@@ -31,7 +31,7 @@ Compatible con teléfonos Android, **Android TV / cajas de TV** y **PC Windows 1
 ## 📲 Cómo instalar
 
 ### En teléfono Android
-1. Descarga el APK: **[⬇ Descargar APK](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.44tv/app-release.apk)**
+1. Descarga el APK: **[⬇ Descargar APK](https://github.com/Medina07P/Condor-Play/releases/download/v1.3.46tv/app-release.apk)**
 2. En tu teléfono ve a **Ajustes → Seguridad → Instalar apps de fuentes desconocidas** y actívalo
 3. Abre el archivo `.apk` descargado e instala
 4. Abre la app e inicia sesión con tus credenciales
@@ -40,7 +40,7 @@ Compatible con teléfonos Android, **Android TV / cajas de TV** y **PC Windows 1
 1. Instala **Downloader** desde la Play Store de tu TV
 2. Abre Downloader y escribe esta URL:
    ```
-   https://github.com/Medina07P/Condor-Play/releases/download/v1.3.44tv/app-release.apk
+   https://github.com/Medina07P/Condor-Play/releases/download/v1.3.46tv/app-release.apk
    ```
 3. Descarga e instala
 4. Navega con el control remoto — toda la app es compatible con D-pad
