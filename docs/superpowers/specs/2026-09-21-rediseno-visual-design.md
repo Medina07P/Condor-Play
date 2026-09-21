@@ -1,7 +1,7 @@
 # Diseño: Rediseño visual de la landing — dirección "Señal en vivo"
 
 **Fecha:** 2026-09-21
-**Estado:** Aprobado por el usuario (alcance, dirección, sistema visual y estructura). Pendiente: revisión de este documento.
+**Estado:** Aprobado por el usuario (alcance, dirección, sistema visual, estructura y este documento).
 
 ## Contexto y objetivo
 
@@ -120,8 +120,10 @@ hero. Rota entre 4 pantallas reales de la app (`captura1` TV en vivo → `captur
   expresiones sobre `index.html`; el rediseño debe conservarlas:
   - `releases/download/v(\d+\.\d+\.\d+tv)/app-release\.apk`
   - `releases/download/v(\d+\.\d+\.\d+)/condorplay-`
-  - Los textos visibles de versión son la cadena exacta (`1.3.41`, `3.7.0`) para que el
-    reemplazo global funcione. No introducir esas cadenas en otro contexto (CSS, JS, comentarios).
+  - Los textos visibles de versión son la cadena exacta de la versión vigente (a 2026-09-21:
+    `1.3.49` y `3.10.4`; cambian con cada release, así que la implementación las lee de
+    `index.html` al momento de escribir) para que el reemplazo global funcione. No introducir
+    esas cadenas en otro contexto (CSS, JS, comentarios).
   - Se reduce la duplicación de hrefs (hoy 6 → los botones que apunten al mismo archivo se
     unifican) pero **siempre queda al menos una URL de cada patrón**.
 - **Cloudflare Pages** sirve todo el repo tal cual; `_redirects` no se toca en este trabajo.
@@ -161,9 +163,9 @@ hero. Rota entre 4 pantallas reales de la app (`captura1` TV en vivo → `captur
 
 ## Fuera de alcance / pendientes para el usuario
 
-- **Deriva de versiones:** `index.html` apunta a v1.3.41tv / v3.7.0 pero `_redirects` a
-  v1.3.49tv / v3.10.4. El script y el workflow nunca actualizarían `_redirects`, porque buscan
-  la versión de `index.html`. Conviene corregirlo aparte.
+- **Versiones (verificado 2026-09-21, tras el pull del usuario):** `index.html`, `_redirects` y
+  `README.md` coinciden en Android v1.3.49tv y Windows v3.10.4; el pull solo cambió versiones,
+  no el contenido de `index.html`. No hay nada que corregir aquí.
 - **Cifras sin verificar:** "10K+ usuarios", "99.9% uptime" (y "4K") se conservan pero deben
   confirmarse; son afirmaciones factuales.
 - **Sin capturas de Android TV ni Windows:** el hero usa el teléfono; cuando existan, se pueden
