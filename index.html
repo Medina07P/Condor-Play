@@ -450,7 +450,7 @@
       .js .reveal { opacity: 1; transform: none; }
     }
   </style>
-  <noscript><style>[role="tabpanel"][hidden] { display: block !important; } .tabs { display: none; }</style></noscript>
+  <noscript><style>[role="tabpanel"] { display: block !important; } .tabs { display: none; } .panel-phone { justify-self: center; }</style></noscript>
 </head>
 <body>
 
@@ -481,7 +481,7 @@
       <span class="nav-wordmark">Cóndor <b>Play</b></span>
     </a>
     <nav class="nav-main" aria-label="Principal">
-      <ul class="nav-links">
+      <ul class="nav-links" role="list">
         <li><a href="#features">Características</a></li>
         <li><a href="#how">¿Cómo funciona?</a></li>
         <li><a href="#pricing">Planes</a></li>
@@ -554,7 +554,7 @@
       </div>
     </section>
     <!-- TIRA DE CANALES -->
-    <div class="strip" tabindex="0" role="region" aria-label="Categorías de la app, desplazable con el teclado o el cursor">
+    <div class="strip" tabindex="0" role="region" aria-label="Categorías de la app">
       <div class="strip-track">
         <ul class="strip-list" role="list">
           <li><b>041</b>Mis favoritos</li>
@@ -592,7 +592,7 @@
         <div class="panel" role="tabpanel" id="panel-tv" aria-labelledby="tab-tv" tabindex="0" style="--tab:#EC1B2E">
           <div class="panel-copy">
             <h3 class="h3">TV en vivo</h3>
-            <ul class="panel-list">
+            <ul class="panel-list" role="list">
               <li>Canales ordenados por categoría, como Colombia o Noticias, con búsqueda y recarga a un toque.</li>
               <li>Marca tus canales con el corazón y encuéntralos al instante en Mis favoritos.</li>
               <li>Navegación pensada para el control remoto en Android TV.</li>
@@ -606,7 +606,7 @@
         <div class="panel" role="tabpanel" id="panel-peliculas" aria-labelledby="tab-peliculas" tabindex="0" style="--tab:#FF9A1F" hidden>
           <div class="panel-copy">
             <h3 class="h3">Películas</h3>
-            <ul class="panel-list">
+            <ul class="panel-list" role="list">
               <li>Catálogo por género: ciencia ficción, acción, aventura y más.</li>
               <li>Títulos en audio latino y favoritos marcados con un toque.</li>
               <li>Controles de reproducción avanzados: seek, velocidad y pantalla completa.</li>
@@ -620,7 +620,7 @@
         <div class="panel" role="tabpanel" id="panel-series" aria-labelledby="tab-series" tabindex="0" style="--tab:#D946EF" hidden>
           <div class="panel-copy">
             <h3 class="h3">Series</h3>
-            <ul class="panel-list">
+            <ul class="panel-list" role="list">
               <li>Series por género (acción, drama, crimen y más), con etiqueta LAT en los títulos que la tienen.</li>
               <li>Guarda tus favoritas y vuelve a ellas cuando quieras.</li>
               <li>Los mismos controles de reproducción que en películas.</li>
@@ -634,7 +634,7 @@
         <div class="panel" role="tabpanel" id="panel-anime" aria-labelledby="tab-anime" tabindex="0" style="--tab:#14B8C8" hidden>
           <div class="panel-copy">
             <h3 class="h3">Anime</h3>
-            <ul class="panel-list">
+            <ul class="panel-list" role="list">
               <li>Sección propia de anime, organizada por género: drama, ciencia ficción, comedia y más.</li>
               <li>Etiqueta LAT en los títulos disponibles en latino.</li>
               <li>Marca tus favoritos con un toque.</li>
@@ -648,7 +648,7 @@
         <div class="panel" role="tabpanel" id="panel-cuenta" aria-labelledby="tab-cuenta" tabindex="0" style="--tab:#3B82F6" hidden>
           <div class="panel-copy">
             <h3 class="h3">Mi cuenta</h3>
-            <ul class="panel-list">
+            <ul class="panel-list" role="list">
               <li>Consulta tu plan y la fecha de vencimiento de tu suscripción, y renuévala desde la app.</li>
               <li>Elige la interfaz (Automático, Forzar TV o Forzar Móvil) si la app no detectó bien tu dispositivo.</li>
               <li>Soporte técnico por WhatsApp y manual de uso a un toque.</li>
@@ -659,7 +659,7 @@
           </div></div></div>
         </div>
 
-        <ul class="feature-list">
+        <ul class="feature-list" role="list">
           <li class="reveal">
             <svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg>
             <h3 class="feature-name">Reproductor ultrarrápido</h3>
@@ -700,7 +700,7 @@
           <p class="eyebrow">Instalación</p>
           <h2 class="h2" id="how-title">En 3 pasos, ya estás viendo</h2>
         </div>
-        <ol class="steps">
+        <ol class="steps" role="list">
           <li class="step reveal">
             <span class="step-n">Paso 1</span>
             <h3 class="step-title">Descarga para tu plataforma</h3>
@@ -738,7 +738,7 @@
               <span class="price-meta"><span>USD</span><span class="price-cop">10.000 COP</span></span>
             </p>
             <p class="plan-period">/ mes · pago mensual</p>
-            <ul class="plan-features">
+            <ul class="plan-features" role="list">
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>2 dispositivos simultáneos</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Canales en vivo HD</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>VOD — películas y series</li>
@@ -762,7 +762,7 @@
             </p>
             <p class="plan-period">/ 3 meses · <s><span class="visually-hidden">antes </span>$9/30.000</s></p>
             <p class="plan-saving">AHORRAS $1.44/4.800 — 16% OFF</p>
-            <ul class="plan-features">
+            <ul class="plan-features" role="list">
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>2 dispositivos simultáneos</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Canales en vivo FHD &amp; 4K</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>VOD completo + EPG</li>
@@ -784,7 +784,7 @@
             </p>
             <p class="plan-period">/ año · <s><span class="visually-hidden">antes </span>$36/120.000</s></p>
             <p class="plan-saving">AHORRAS $13.32 / 44.000 — 37% OFF</p>
-            <ul class="plan-features">
+            <ul class="plan-features" role="list">
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>3 dispositivos simultáneos</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Canales en vivo 4K UHD</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>VOD ilimitado + EPG</li>
@@ -848,7 +848,7 @@
         </div>
         <div class="footer-col">
           <p class="footer-title">Producto</p>
-          <ul>
+          <ul role="list">
             <li><a href="#features">Características</a></li>
             <li><a href="#pricing">Planes y precios</a></li>
             <li><a href="#download">Descargar APK / EXE</a></li>
@@ -857,7 +857,7 @@
         </div>
         <div class="footer-col">
           <p class="footer-title">Proyecto</p>
-          <ul>
+          <ul role="list">
             <li><a href="https://github.com/Medina07P/Condor-Play" target="_blank" rel="noopener">GitHub →</a></li>
             <li><a href="https://github.com/Medina07P/Condor-Play/releases" target="_blank" rel="noopener">Releases</a></li>
             <li><a href="https://github.com/Medina07P/Condor-Play/issues" target="_blank" rel="noopener">Reportar bug</a></li>
@@ -865,7 +865,7 @@
         </div>
         <div class="footer-col">
           <p class="footer-title">Contacto</p>
-          <ul>
+          <ul role="list">
             <li><a href="https://wa.me/573014518350" target="_blank" rel="noopener">WhatsApp +57 301 451 8350</a></li>
           </ul>
         </div>
@@ -951,7 +951,11 @@
           timer = setInterval(() => show((current + 1) % shots.length), 3500);
         };
         document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
-        reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) { stop(); show(0); } else start(); });
+        if (reduceMotion.addEventListener) {
+          reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) { stop(); show(0); } else start(); });
+        } else if (reduceMotion.addListener) {
+          reduceMotion.addListener(() => { if (reduceMotion.matches) { stop(); show(0); } else start(); });
+        }
         show(0);
         start();
       }
