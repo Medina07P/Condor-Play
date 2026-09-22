@@ -8,6 +8,15 @@
         "value": "instrument sans",
         "createdAt": "2026-09-22T01:55:41.511Z",
         "reason": "User confirmed instrument sans is intentional"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-22T02:47:31.425Z",
+        "reason": "User confirmed: only the channel banner (.osd, the page's signature element) keeps the red left accent; removed from .hero-status per the same decision"
       }
     ]
   }
