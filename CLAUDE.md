@@ -12,6 +12,8 @@ Landing page estática de **Cóndor Play**, un servicio IPTV propio (canales en 
 |---|---|
 | `index.html` | Todo el sitio: HTML + CSS + JS vanilla en un solo archivo, sin build ni dependencias |
 | `logo.jpeg` | Logo oficial (cóndor rojo/negro dentro de un televisor) |
+| `assets/` | Capturas de la app (`app-*.webp`, 720×1512) y emblema del logo sin fondo (`logo-mark.webp`), generados con ffmpeg a partir de `captura*.jpeg` y `logo.jpeg`. Los originales `captura*.jpeg` están en `.gitignore` |
+| `tests/check-site.mjs` | Verificaciones estáticas de `index.html` (sin dependencias): `node tests/check-site.mjs [grupo]`. Correrlo antes de publicar cambios visuales |
 | `_redirects` | Redirects de Cloudflare Pages: `/descargar` (APK Android) y `/descargar-windows` (EXE) |
 | `README.md` | Página del repo en GitHub, orientada al usuario final (instalación, planes, soporte) |
 | `update-version.ps1` | Script para actualizar la versión en todos los archivos de una vez |
@@ -62,5 +64,7 @@ Este repo es solo la landing. El servicio completo tiene tres piezas (notas en O
 ## Convenciones
 
 - Todo el contenido del sitio y el README están en **español** (público colombiano; precios en USD y COP).
-- Los nombres de variables CSS heredan nombres viejos (`--cyan` es en realidad el rojo `#ec1b2e` de la marca) — no renombrar sin ajustar todos los usos.
+- Diseño "Señal en vivo": tokens en `:root` de `index.html` — `--red` (`#EC1B2E`, único acento de marca), `--red-soft` (texto rojo pequeño), `--bg`, `--surface`, `--surface-2`, `--text`, `--muted`. Tipografías: Archivo (títulos, `font-stretch` ancho), Instrument Sans (texto) y JetBrains Mono (datos y etiquetas). Sin emojis: los iconos son SVG del sprite al inicio del `<body>`.
+- Los enlaces de descarga y los textos `Android vX.Y.Z` / `Windows vX.Y.Z` deben seguir con esos patrones exactos y sin repetirse en CSS/JS, para que `update-version.ps1` y el workflow los reemplacen (`node tests/check-site.mjs versioning` lo verifica).
+- Los botones "Comprar" de los planes abren WhatsApp con el plan en el mensaje (`https://wa.me/573014518350?text=…`).
 - Contacto/ventas por WhatsApp: +57 301 451 8350.
