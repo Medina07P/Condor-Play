@@ -140,7 +140,7 @@
     .phone-body {
       position: relative; padding: 9px; border-radius: 2.4rem;
       background: linear-gradient(160deg, #2b2124, #120d0f);
-      box-shadow: 0 0 0 1px var(--line-strong), 0 30px 80px -24px rgba(236, 27, 46, .30);
+      box-shadow: 0 0 0 1px var(--line-strong), 0 30px 60px -24px rgba(0, 0, 0, .65);
     }
     .phone-body::after {
       content: ""; position: absolute; top: 19px; left: 50%; z-index: 1;
@@ -210,7 +210,7 @@
     .hero-status {
       display: inline-flex; align-items: center; gap: .7rem;
       padding: .5rem .9rem .5rem .8rem;
-      background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--red);
+      background: var(--surface); border: 1px solid var(--line);
       font: 500 .78rem/1.3 var(--font-mono); letter-spacing: .04em; color: var(--muted);
     }
     .hero-title {
@@ -269,9 +269,9 @@
     }
 
     /* ─── TIRA DE CANALES ────────────────────────────────── */
-    .strip { overflow: hidden; background: var(--surface); border-block: 1px solid var(--line); }
-    .strip-track { display: flex; width: max-content; animation: strip 48s linear infinite; }
-    .strip:hover .strip-track { animation-play-state: paused; }
+    .strip { overflow-x: auto; overflow-y: hidden; background: var(--surface); border-block: 1px solid var(--line); -webkit-overflow-scrolling: touch; }
+    .strip:focus-visible { outline: 2px solid var(--red-soft); outline-offset: -2px; }
+    .strip-track { display: flex; width: max-content; }
     .strip-list { display: flex; flex: none; }
     .strip-list li {
       display: flex; align-items: baseline; gap: .7rem; padding: .9rem 1.6rem;
@@ -279,12 +279,6 @@
       font: 500 .8rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
     }
     .strip-list b { color: var(--red-soft); font-weight: 500; }
-    @keyframes strip { to { transform: translateX(-50%); } }
-    @media (prefers-reduced-motion: reduce) {
-      .strip-track { animation: none; width: auto; }
-      .strip-list { flex: 0 1 auto; flex-wrap: wrap; }
-      .strip-list[aria-hidden="true"] { display: none; }
-    }
     /* ─── CARACTERÍSTICAS ────────────────────────────────── */
     .h3 {
       font-family: var(--font-display); font-stretch: 110%; font-weight: 800;
@@ -380,7 +374,6 @@
     .price-meta { display: flex; flex-direction: column; gap: .25rem; padding-bottom: .35rem; font: 500 .8rem/1.2 var(--font-mono); color: var(--muted); }
     .price-cop { color: var(--text); }
     .plan-period { margin-top: .6rem; color: var(--muted); font-size: .9rem; }
-    .plan-period s { opacity: .7; }
     .plan-saving {
       align-self: flex-start; margin-top: .9rem; padding: .25rem .55rem; border-radius: 4px;
       border: 1px solid rgba(255, 90, 110, .35);
@@ -433,7 +426,7 @@
     .footer-col a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); font-size: .95rem; transition: color .2s; }
     .footer-col a:hover { color: var(--text); }
     .footer-bottom {
-      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
       margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
       color: var(--muted); font-size: .88rem;
     }
@@ -528,7 +521,7 @@
             </a>
           </div>
 
-          <ul class="platforms" aria-label="Plataformas compatibles">
+          <ul class="platforms" role="list" aria-label="Plataformas compatibles">
             <li><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>Android &amp; TV</li>
             <li><svg class="icon" aria-hidden="true"><use href="#i-windows"/></svg>Windows 10/11</li>
             <li><svg class="icon" aria-hidden="true"><use href="#i-tv"/></svg>TV Box</li>
@@ -561,23 +554,9 @@
       </div>
     </section>
     <!-- TIRA DE CANALES -->
-    <div class="strip">
+    <div class="strip" tabindex="0" role="region" aria-label="Categorías de la app, desplazable con el teclado o el cursor">
       <div class="strip-track">
-        <ul class="strip-list" aria-label="Categorías de la app">
-          <li><b>041</b>Mis favoritos</li>
-          <li><b>042</b>Colombia</li>
-          <li><b>043</b>Noticias</li>
-          <li><b>044</b>Películas</li>
-          <li><b>045</b>Ciencia ficción</li>
-          <li><b>046</b>Acción</li>
-          <li><b>047</b>Aventura</li>
-          <li><b>048</b>Series</li>
-          <li><b>049</b>Drama</li>
-          <li><b>050</b>Crimen</li>
-          <li><b>051</b>Anime</li>
-          <li><b>052</b>Comedia</li>
-        </ul>
-        <ul class="strip-list" aria-hidden="true">
+        <ul class="strip-list" role="list">
           <li><b>041</b>Mis favoritos</li>
           <li><b>042</b>Colombia</li>
           <li><b>043</b>Noticias</li>
@@ -993,6 +972,7 @@
         tabs.forEach((tab, i) => {
           tab.addEventListener('click', () => select(i));
           tab.addEventListener('keydown', (e) => {
+            if (e.altKey || e.ctrlKey || e.metaKey) return;
             const last = tabs.length - 1;
             const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
             if (next !== undefined) { e.preventDefault(); select(next, true); }

@@ -127,13 +127,13 @@ check('hero', 'banner de canal decorativo con las 4 escenas', () => {
   for (const s of ['EN VIVO', 'PELÍCULAS', 'SERIES', 'ANIME', 'CH 01', 'CH 04']) ok(script.includes(s), `el JS no incluye "${s}"`);
   ok(/matches/.test(script) && /visibilitychange/.test(script), 'la rotación debe respetar movimiento reducido y pausarse con la pestaña oculta');
 });
-check('hero', 'tira de canales: 2 listas, la copia oculta a lectores, sin emojis', () => {
-  const strip = (html.match(/<div class="strip">[\s\S]*?<\/div>\s*<\/div>/) || [''])[0];
+check('hero', 'tira de canales: una lista, scroll manual, sin animación automática, sin emojis', () => {
+  const strip = (html.match(/<div[^>]*class="strip"[^>]*>[\s\S]*?<\/div>\s*<\/div>/) || [''])[0];
   const lists = tags('ul', strip);
-  ok(lists.length === 2, `hay ${lists.length} listas`);
-  ok(attr(lists[1], 'aria-hidden') === 'true', 'la copia debe tener aria-hidden');
+  ok(lists.length === 1, `hay ${lists.length} listas (debe ser 1: ya no hay copia duplicada)`);
   ok(/Colombia/.test(strip) && /Noticias/.test(strip), 'faltan categorías reales de la app');
-  ok(/@keyframes strip/.test(styles), 'falta la animación de la tira');
+  ok(!/@keyframes\s+strip\b/.test(styles) && !/animation:\s*strip\b/.test(styles), 'no debe quedar animación automática de la tira');
+  ok(/\.strip\s*\{[^}]*overflow-x:\s*auto/.test(styles), 'la tira debe permitir scroll manual (overflow-x: auto)');
 });
 
 /* ── features ───────────────────────────────────────────── */
