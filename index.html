@@ -282,7 +282,7 @@
     @keyframes strip { to { transform: translateX(-50%); } }
     @media (prefers-reduced-motion: reduce) {
       .strip-track { animation: none; width: auto; }
-      .strip-list { flex-wrap: wrap; }
+      .strip-list { flex: 0 1 auto; flex-wrap: wrap; }
       .strip-list[aria-hidden="true"] { display: none; }
     }
     /* @css:features */
