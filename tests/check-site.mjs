@@ -157,7 +157,7 @@ check('features', 'teclado: flechas, Inicio y Fin', () => {
   for (const k of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) ok(script.includes(k), `falta ${k}`);
 });
 check('features', 'lista de 6 características con copy original', () => {
-  const list = (featSec().match(/<ul class="feature-list">[\s\S]*?<\/ul>/) || [''])[0];
+  const list = (featSec().match(/<ul class="feature-list"[^>]*>[\s\S]*?<\/ul>/) || [''])[0];
   ok(count(/<li\b/g, list) === 6, 'debe tener 6 elementos');
   for (const s of ['HLS, MPEG-TS', 'control remoto en Android TV', 'failover de streams', 'seek, velocidad', 'animaciones fluidas', 'publicadas en GitHub']) ok(list.includes(s), `falta el copy "${s}"`);
 });
