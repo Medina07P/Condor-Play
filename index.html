@@ -307,6 +307,7 @@
       transition: transform .3s ease;
     }
     .tab[aria-selected="true"]::after { transform: scaleX(1); }
+    .tab:focus-visible { outline-offset: -4px; }
 
     .panel {
       display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 270px);
