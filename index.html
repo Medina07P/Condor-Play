@@ -164,7 +164,7 @@
       transition: border-color .3s, background-color .3s;
     }
     .nav.is-scrolled { border-bottom-color: var(--line); background: rgba(10, 7, 8, .94); }
-    .nav-brand { display: inline-flex; align-items: center; gap: .7rem; }
+    .nav-brand { display: inline-flex; align-items: center; gap: .7rem; min-height: 44px; }
     .nav-brand img { height: 2.4rem; width: auto; }
     .nav-wordmark {
       font-family: var(--font-display); font-stretch: 125%; font-weight: 800;
@@ -173,7 +173,7 @@
     .nav-wordmark b { color: var(--red-soft); font-weight: 800; }
     .nav-main { margin-inline: auto; }
     .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { padding: .5rem 0; font-size: .95rem; font-weight: 500; color: var(--muted); transition: color .2s; }
+    .nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: .95rem; font-weight: 500; color: var(--muted); transition: color .2s; }
     .nav-links a:hover { color: var(--text); }
     .nav-toggle {
       display: none; width: 44px; height: 44px;
@@ -216,15 +216,15 @@
       font: 500 .78rem/1 var(--font-mono);
       letter-spacing: .12em; text-transform: uppercase;
     }
-    .footer-col ul { display: grid; gap: .7rem; }
-    .footer-col a { color: var(--muted); font-size: .95rem; transition: color .2s; }
+    .footer-col ul { display: grid; gap: 0; }
+    .footer-col a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); font-size: .95rem; transition: color .2s; }
     .footer-col a:hover { color: var(--text); }
     .footer-bottom {
       display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
       margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
       color: var(--muted); font-size: .88rem;
     }
-    .footer-bottom a { display: inline-flex; align-items: center; gap: .45rem; transition: color .2s; }
+    .footer-bottom a { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; transition: color .2s; }
     .footer-bottom a:hover { color: var(--text); }
     @media (max-width: 900px) {
       .footer-grid { grid-template-columns: 1fr 1fr; }
