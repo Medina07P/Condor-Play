@@ -403,7 +403,7 @@ Expected: `assets/` y `.gitignore` como no rastreados; `captura*.jpeg` ya **no**
 - [ ] **Step 6: Ejecutar el grupo y confirmar que pasa**
 
 Run: `node tests/check-site.mjs assets`
-Expected: `9 correctas, 0 fallidas`
+Expected: `8 correctas, 0 fallidas`
 
 - [ ] **Step 7: Commit**
 
