@@ -285,7 +285,59 @@
       .strip-list { flex: 0 1 auto; flex-wrap: wrap; }
       .strip-list[aria-hidden="true"] { display: none; }
     }
-    /* @css:features */
+    /* ─── CARACTERÍSTICAS ────────────────────────────────── */
+    .h3 {
+      font-family: var(--font-display); font-stretch: 110%; font-weight: 800;
+      font-size: clamp(1.35rem, 2.4vw, 1.9rem); line-height: 1.1; text-transform: uppercase;
+    }
+    .tabs {
+      display: flex; gap: .25rem; overflow-x: auto; scrollbar-width: none;
+      border-bottom: 1px solid var(--line);
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      position: relative; flex: none; min-height: 48px; padding: 1rem 1.25rem;
+      background: none; border: 0; color: var(--muted);
+      font: 600 .95rem/1 var(--font-body); transition: color .2s;
+    }
+    .tab:hover, .tab[aria-selected="true"] { color: var(--text); }
+    .tab::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+      background: var(--tab, var(--red)); transform: scaleX(0); transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .tab[aria-selected="true"]::after { transform: scaleX(1); }
+
+    .panel {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 270px);
+      gap: clamp(2rem, 5vw, 4rem); align-items: center;
+      padding-top: clamp(2rem, 4vw, 3rem);
+    }
+    .panel-list { display: grid; gap: 1rem; margin-top: 1.5rem; max-width: 34rem; }
+    .panel-list li { position: relative; padding-left: 1.5rem; color: var(--muted); }
+    .panel-list li::before {
+      content: ""; position: absolute; left: 0; top: .6em;
+      width: .5rem; height: .5rem; background: var(--tab, var(--red));
+    }
+    .panel-phone { width: min(100%, 270px); justify-self: center; }
+
+    .feature-list {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem 2rem;
+      margin-top: clamp(3rem, 6vw, 5rem); padding-top: clamp(2rem, 4vw, 3rem);
+      border-top: 1px solid var(--line);
+    }
+    .feature-list .icon { width: 1.5rem; height: 1.5rem; color: var(--red-soft); margin-bottom: 1rem; }
+    .feature-name { margin-bottom: .5rem; font-size: 1.05rem; font-weight: 600; }
+    .feature-list p { color: var(--muted); font-size: .95rem; line-height: 1.55; }
+
+    @media (max-width: 960px) {
+      .panel { grid-template-columns: minmax(0, 1fr); }
+      .feature-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .feature-list { grid-template-columns: minmax(0, 1fr); }
+      .tab { padding-inline: 1rem; }
+    }
     /* @css:steps */
     /* @css:plans */
     /* @css:download */
@@ -463,7 +515,127 @@
         </ul>
       </div>
     </div>
-    <!-- @section:features -->
+    <!-- CARACTERÍSTICAS -->
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Características</p>
+          <h2 class="h2" id="features-title">Todo lo que necesitas<br> en una sola app</h2>
+          <p class="lede">Diseñada para exigentes. Cóndor Play combina velocidad, estabilidad y una experiencia visual premium en Android y Windows.</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Secciones de la app">
+          <button class="tab" type="button" role="tab" id="tab-tv" aria-selected="true" aria-controls="panel-tv" style="--tab:#EC1B2E">TV en vivo</button>
+          <button class="tab" type="button" role="tab" id="tab-peliculas" aria-selected="false" aria-controls="panel-peliculas" tabindex="-1" style="--tab:#FF9A1F">Películas</button>
+          <button class="tab" type="button" role="tab" id="tab-series" aria-selected="false" aria-controls="panel-series" tabindex="-1" style="--tab:#D946EF">Series</button>
+          <button class="tab" type="button" role="tab" id="tab-anime" aria-selected="false" aria-controls="panel-anime" tabindex="-1" style="--tab:#14B8C8">Anime</button>
+          <button class="tab" type="button" role="tab" id="tab-cuenta" aria-selected="false" aria-controls="panel-cuenta" tabindex="-1" style="--tab:#3B82F6">Mi cuenta</button>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-tv" aria-labelledby="tab-tv" tabindex="0" style="--tab:#EC1B2E">
+          <div class="panel-copy">
+            <h3 class="h3">TV en vivo</h3>
+            <ul class="panel-list">
+              <li>Canales ordenados por categoría, como Colombia o Noticias, con búsqueda y recarga a un toque.</li>
+              <li>Marca tus canales con el corazón y encuéntralos al instante en Mis favoritos.</li>
+              <li>Navegación pensada para el control remoto en Android TV.</li>
+            </ul>
+          </div>
+          <div class="panel-phone"><div class="phone-body"><div class="phone-screen">
+            <img src="assets/app-tv.webp" alt="Pantalla de TV en vivo de Cóndor Play con Mis favoritos, Colombia y Noticias" width="720" height="1512" loading="lazy" decoding="async">
+          </div></div></div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-peliculas" aria-labelledby="tab-peliculas" tabindex="0" style="--tab:#FF9A1F" hidden>
+          <div class="panel-copy">
+            <h3 class="h3">Películas</h3>
+            <ul class="panel-list">
+              <li>Catálogo por género: ciencia ficción, acción, aventura y más.</li>
+              <li>Títulos en audio latino y favoritos marcados con un toque.</li>
+              <li>Controles de reproducción avanzados: seek, velocidad y pantalla completa.</li>
+            </ul>
+          </div>
+          <div class="panel-phone"><div class="phone-body"><div class="phone-screen">
+            <img src="assets/app-peliculas.webp" alt="Sección Películas de Cóndor Play con ciencia ficción, acción y aventura" width="720" height="1512" loading="lazy" decoding="async">
+          </div></div></div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-series" aria-labelledby="tab-series" tabindex="0" style="--tab:#D946EF" hidden>
+          <div class="panel-copy">
+            <h3 class="h3">Series</h3>
+            <ul class="panel-list">
+              <li>Series por género (acción, drama, crimen y más), con etiqueta LAT en los títulos que la tienen.</li>
+              <li>Guarda tus favoritas y vuelve a ellas cuando quieras.</li>
+              <li>Los mismos controles de reproducción que en películas.</li>
+            </ul>
+          </div>
+          <div class="panel-phone"><div class="phone-body"><div class="phone-screen">
+            <img src="assets/app-series.webp" alt="Sección Series de Cóndor Play con acción, drama y crimen" width="720" height="1512" loading="lazy" decoding="async">
+          </div></div></div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-anime" aria-labelledby="tab-anime" tabindex="0" style="--tab:#14B8C8" hidden>
+          <div class="panel-copy">
+            <h3 class="h3">Anime</h3>
+            <ul class="panel-list">
+              <li>Sección propia de anime, organizada por género: drama, ciencia ficción, comedia y más.</li>
+              <li>Etiqueta LAT en los títulos disponibles en latino.</li>
+              <li>Marca tus favoritos con un toque.</li>
+            </ul>
+          </div>
+          <div class="panel-phone"><div class="phone-body"><div class="phone-screen">
+            <img src="assets/app-anime.webp" alt="Sección Anime de Cóndor Play con drama, ciencia ficción y comedia" width="720" height="1512" loading="lazy" decoding="async">
+          </div></div></div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-cuenta" aria-labelledby="tab-cuenta" tabindex="0" style="--tab:#3B82F6" hidden>
+          <div class="panel-copy">
+            <h3 class="h3">Mi cuenta</h3>
+            <ul class="panel-list">
+              <li>Consulta tu plan y la fecha de vencimiento de tu suscripción, y renuévala desde la app.</li>
+              <li>Elige la interfaz (Automático, Forzar TV o Forzar Móvil) si la app no detectó bien tu dispositivo.</li>
+              <li>Soporte técnico por WhatsApp y manual de uso a un toque.</li>
+            </ul>
+          </div>
+          <div class="panel-phone"><div class="phone-body"><div class="phone-screen">
+            <img src="assets/app-cuenta.webp" alt="Pantalla Mi Cuenta de Cóndor Play con suscripción activa, dispositivo y ajustes de interfaz" width="720" height="1512" loading="lazy" decoding="async">
+          </div></div></div>
+        </div>
+
+        <ul class="feature-list">
+          <li class="reveal">
+            <svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg>
+            <h3 class="feature-name">Reproductor ultrarrápido</h3>
+            <p>Motor de reproducción optimizado con soporte para HLS, MPEG-TS y streams de alta velocidad sin buffering.</p>
+          </li>
+          <li class="reveal" style="--d:1">
+            <svg class="icon" aria-hidden="true"><use href="#i-tv"/></svg>
+            <h3 class="feature-name">Android TV, Móvil &amp; PC</h3>
+            <p>Navegación perfecta con control remoto en Android TV. Interfaz adaptada para pantallas grandes, smartphones y escritorio Windows.</p>
+          </li>
+          <li class="reveal" style="--d:2">
+            <svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>
+            <h3 class="feature-name">Streaming estable</h3>
+            <p>Reconexión automática, buffer inteligente y failover de streams para que nunca pierdas lo que estás viendo.</p>
+          </li>
+          <li class="reveal">
+            <svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>
+            <h3 class="feature-name">VOD integrado</h3>
+            <p>Películas y series con controles de reproducción avanzados: seek, velocidad, pantalla completa y más.</p>
+          </li>
+          <li class="reveal" style="--d:1">
+            <svg class="icon" aria-hidden="true"><use href="#i-layout"/></svg>
+            <h3 class="feature-name">Interfaz cinética</h3>
+            <p>Diseño oscuro moderno con animaciones fluidas. Navega canales y categorías de forma rápida e intuitiva.</p>
+          </li>
+          <li class="reveal" style="--d:2">
+            <svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>
+            <h3 class="feature-name">Actualizaciones continuas</h3>
+            <p>Mejoras frecuentes, nuevas funciones y correcciones publicadas en GitHub para mantenerte siempre al día.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
     <!-- @section:steps -->
     <!-- @section:plans -->
     <!-- @section:download -->
@@ -589,7 +761,29 @@
         show(0);
         start();
       }
-      /* @js:features */
+      /* Características: pestañas accesibles (patrón ARIA tabs, con flechas, Inicio y Fin) */
+      const tablist = document.querySelector('[role="tablist"]');
+      if (tablist) {
+        const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+        const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
+        const select = (index, focus) => {
+          tabs.forEach((tab, i) => {
+            const on = i === index;
+            tab.setAttribute('aria-selected', String(on));
+            tab.tabIndex = on ? 0 : -1;
+            panels[i].hidden = !on;
+          });
+          if (focus) tabs[index].focus();
+        };
+        tabs.forEach((tab, i) => {
+          tab.addEventListener('click', () => select(i));
+          tab.addEventListener('keydown', (e) => {
+            const last = tabs.length - 1;
+            const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
+            if (next !== undefined) { e.preventDefault(); select(next, true); }
+          });
+        });
+      }
       /* @js:download */
     })();
   </script>
