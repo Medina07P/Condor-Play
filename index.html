@@ -201,7 +201,90 @@
     @media (min-width: 901px) { .mobile-menu { display: none !important; } }
 
     /* ─── SECCIONES (los bloques se insertan en las Tareas 4–8) ── */
-    /* @css:hero */
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero { padding: calc(var(--nav-h) + clamp(2.5rem, 6vw, 5rem)) 0 clamp(3rem, 6vw, 5rem); }
+    .hero-grid {
+      display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+      gap: clamp(2rem, 5vw, 4rem); align-items: center;
+    }
+    .hero-status {
+      display: inline-flex; align-items: center; gap: .7rem;
+      padding: .5rem .9rem .5rem .8rem;
+      background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--red);
+      font: 500 .78rem/1.3 var(--font-mono); letter-spacing: .04em; color: var(--muted);
+    }
+    .hero-title {
+      margin: 1.4rem 0;
+      font-family: var(--font-display); font-stretch: 125%; font-weight: 800;
+      font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+      line-height: .98; letter-spacing: -.01em; text-transform: uppercase;
+      text-wrap: balance;
+    }
+    .hero-live { color: var(--red); white-space: nowrap; }
+    .hero-sub { max-width: 34rem; color: var(--muted); font-size: clamp(1.02rem, 1.6vw, 1.2rem); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .platforms { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1.5rem; }
+    .platforms li { display: inline-flex; align-items: center; gap: .5rem; font: 500 .8rem/1 var(--font-mono); color: var(--muted); }
+    .platforms .icon { width: 1rem; height: 1rem; color: var(--red-soft); }
+    .facts {
+      display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 1.5rem 2.5rem;
+      margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    }
+    .fact { display: flex; flex-direction: column-reverse; gap: .35rem; }
+    .fact dd {
+      font-family: var(--font-display); font-stretch: 112%; font-weight: 800;
+      font-size: 1.6rem; line-height: 1;
+    }
+    .fact dt { font: 500 .7rem/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+    /* teléfono + banner de canal (firma) */
+    .hero-device { display: flex; justify-content: center; }
+    .phone { position: relative; width: min(100%, 300px); }
+    .shot { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
+    .shot.is-active { opacity: 1; }
+    .osd {
+      position: absolute; top: -1rem; left: -1.25rem; z-index: 2;
+      display: flex; align-items: stretch;
+      background: rgba(10, 7, 8, .94);
+      border: 1px solid var(--line-strong); border-left: 4px solid var(--red);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+      font: 500 .8rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase;
+    }
+    .osd-ch { padding: .65rem .7rem; color: var(--red-soft); }
+    .osd-label {
+      display: flex; align-items: center; gap: .5rem; min-width: 8.5rem;
+      padding: .65rem .8rem; border-left: 1px solid var(--line-strong);
+    }
+    .osd .live-dot { display: none; }
+    .osd.is-live .live-dot { display: block; }
+
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: minmax(0, 1fr); }
+      .hero-device { margin-top: 1rem; }
+    }
+    @media (max-width: 560px) {
+      .hero-actions .btn { width: 100%; }
+      .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .osd { left: -.5rem; }
+    }
+
+    /* ─── TIRA DE CANALES ────────────────────────────────── */
+    .strip { overflow: hidden; background: var(--surface); border-block: 1px solid var(--line); }
+    .strip-track { display: flex; width: max-content; animation: strip 48s linear infinite; }
+    .strip:hover .strip-track { animation-play-state: paused; }
+    .strip-list { display: flex; flex: none; }
+    .strip-list li {
+      display: flex; align-items: baseline; gap: .7rem; padding: .9rem 1.6rem;
+      border-right: 1px solid var(--line); white-space: nowrap;
+      font: 500 .8rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+    }
+    .strip-list b { color: var(--red-soft); font-weight: 500; }
+    @keyframes strip { to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) {
+      .strip-track { animation: none; width: auto; }
+      .strip-list { flex-wrap: wrap; }
+      .strip-list[aria-hidden="true"] { display: none; }
+    }
     /* @css:features */
     /* @css:steps */
     /* @css:plans */
@@ -296,8 +379,90 @@
   </nav>
 
   <main id="main-content">
-    <!-- @section:hero -->
-    <!-- @section:strip -->
+    <!-- HERO -->
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="hero-status"><span class="live-dot" aria-hidden="true"></span>Android v1.3.49 · Windows v3.10.4 — Ya disponible</p>
+          <h1 class="hero-title" id="hero-title">Tu TV <span class="hero-live">en vivo</span>, sin límites.</h1>
+          <p class="hero-sub">El reproductor IPTV más rápido y elegante para Android TV, smartphones y PC Windows. Streaming estable, interfaz cinética y actualizaciones continuas.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="https://github.com/Medina07P/Condor-Play/releases/download/v1.3.49tv/app-release.apk" download data-platform="android">
+              <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
+              Descargar para Android
+            </a>
+            <a class="btn btn-ghost btn-lg" href="https://github.com/Medina07P/Condor-Play/releases/download/v3.10.4/condorplay-3.10.4.exe" download data-platform="windows">
+              <svg class="icon" aria-hidden="true"><use href="#i-windows"/></svg>
+              Windows
+            </a>
+          </div>
+
+          <ul class="platforms" aria-label="Plataformas compatibles">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>Android &amp; TV</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-windows"/></svg>Windows 10/11</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-tv"/></svg>TV Box</li>
+          </ul>
+
+          <dl class="facts">
+            <div class="fact"><dt>Usuarios activos</dt><dd>10K+</dd></div>
+            <div class="fact"><dt>Uptime</dt><dd>99.9%</dd></div>
+            <div class="fact"><dt>Resolución máx.</dt><dd>4K</dd></div>
+            <div class="fact"><dt>Última versión</dt><dd>v3.10.4</dd></div>
+          </dl>
+        </div>
+
+        <div class="hero-device">
+          <div class="phone">
+            <div class="phone-body">
+              <div class="phone-screen" id="phone-screen">
+                <img class="shot is-active" src="assets/app-tv.webp" alt="Pantalla de TV en vivo de Cóndor Play con canales favoritos y por categoría" width="720" height="1512" fetchpriority="high" decoding="async">
+                <img class="shot" src="assets/app-peliculas.webp" alt="Sección Películas de Cóndor Play con el catálogo por género" width="720" height="1512" decoding="async" aria-hidden="true">
+                <img class="shot" src="assets/app-series.webp" alt="Sección Series de Cóndor Play con el catálogo por género" width="720" height="1512" decoding="async" aria-hidden="true">
+                <img class="shot" src="assets/app-anime.webp" alt="Sección Anime de Cóndor Play con el catálogo por género" width="720" height="1512" decoding="async" aria-hidden="true">
+              </div>
+            </div>
+            <div class="osd is-live" id="osd" aria-hidden="true">
+              <span class="osd-ch" id="osd-ch">CH 01</span>
+              <span class="osd-label"><span class="live-dot"></span><span id="osd-label">EN VIVO</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- TIRA DE CANALES -->
+    <div class="strip">
+      <div class="strip-track">
+        <ul class="strip-list" aria-label="Categorías de la app">
+          <li><b>041</b>Mis favoritos</li>
+          <li><b>042</b>Colombia</li>
+          <li><b>043</b>Noticias</li>
+          <li><b>044</b>Películas</li>
+          <li><b>045</b>Ciencia ficción</li>
+          <li><b>046</b>Acción</li>
+          <li><b>047</b>Aventura</li>
+          <li><b>048</b>Series</li>
+          <li><b>049</b>Drama</li>
+          <li><b>050</b>Crimen</li>
+          <li><b>051</b>Anime</li>
+          <li><b>052</b>Comedia</li>
+        </ul>
+        <ul class="strip-list" aria-hidden="true">
+          <li><b>041</b>Mis favoritos</li>
+          <li><b>042</b>Colombia</li>
+          <li><b>043</b>Noticias</li>
+          <li><b>044</b>Películas</li>
+          <li><b>045</b>Ciencia ficción</li>
+          <li><b>046</b>Acción</li>
+          <li><b>047</b>Aventura</li>
+          <li><b>048</b>Series</li>
+          <li><b>049</b>Drama</li>
+          <li><b>050</b>Crimen</li>
+          <li><b>051</b>Anime</li>
+          <li><b>052</b>Comedia</li>
+        </ul>
+      </div>
+    </div>
     <!-- @section:features -->
     <!-- @section:steps -->
     <!-- @section:plans -->
@@ -389,7 +554,41 @@
         reveals.forEach((el) => io.observe(el));
       }
 
-      /* @js:hero */
+      /* Hero: el teléfono rota entre las pantallas reales de la app y el banner cambia de canal */
+      const screen = document.getElementById('phone-screen');
+      if (screen) {
+        const shots = [...screen.querySelectorAll('.shot')];
+        const osd = document.getElementById('osd');
+        const osdCh = document.getElementById('osd-ch');
+        const osdLabel = document.getElementById('osd-label');
+        const scenes = [
+          { ch: 'CH 01', label: 'EN VIVO', live: true },
+          { ch: 'CH 02', label: 'PELÍCULAS', live: false },
+          { ch: 'CH 03', label: 'SERIES', live: false },
+          { ch: 'CH 04', label: 'ANIME', live: false },
+        ];
+        let current = 0;
+        let timer = null;
+        const show = (n) => {
+          current = n;
+          shots.forEach((shot, i) => {
+            shot.classList.toggle('is-active', i === n);
+            if (i === n) shot.removeAttribute('aria-hidden'); else shot.setAttribute('aria-hidden', 'true');
+          });
+          osdCh.textContent = scenes[n].ch;
+          osdLabel.textContent = scenes[n].label;
+          osd.classList.toggle('is-live', scenes[n].live);
+        };
+        const stop = () => { clearInterval(timer); timer = null; };
+        const start = () => {
+          if (timer || reduceMotion.matches || document.hidden) return;
+          timer = setInterval(() => show((current + 1) % shots.length), 3500);
+        };
+        document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+        reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) { stop(); show(0); } else start(); });
+        show(0);
+        start();
+      }
       /* @js:features */
       /* @js:download */
     })();
