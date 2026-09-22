@@ -189,7 +189,7 @@
       position: fixed; z-index: 99; top: var(--nav-h); inset-inline: 0;
       display: flex; flex-direction: column;
       padding: 1rem var(--gutter) 1.5rem;
-      background: rgba(10, 7, 8, .98); border-bottom: 1px solid var(--line);
+      background: var(--bg); border-bottom: 1px solid var(--line);
     }
     .mobile-menu a:not(.btn) { padding: .9rem 0; font-weight: 500; border-bottom: 1px solid var(--line); }
     .mobile-menu .btn { margin-top: 1rem; }
@@ -365,7 +365,7 @@
       padding: .25rem .55rem; border-radius: 4px; background: var(--red); color: var(--on-red);
       font: 700 .7rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase;
     }
-    .plan-price { display: flex; align-items: flex-end; gap: .9rem; margin-top: 1.25rem; }
+    .plan-price { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .9rem; margin-top: 1.25rem; }
     .price-usd {
       font-family: var(--font-display); font-stretch: 112%; font-weight: 800;
       font-size: clamp(2.8rem, 4.6vw, 3.6rem); line-height: 1; letter-spacing: -.02em;
