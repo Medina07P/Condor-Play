@@ -399,7 +399,26 @@
       .plans { grid-template-columns: minmax(0, 1fr); max-width: 30rem; margin-inline: auto; }
       .plan--featured { order: -1; }
     }
-    /* @css:download */
+    /* ─── DESCARGA ───────────────────────────────────────── */
+    .dl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; max-width: 56rem; margin-inline: auto; }
+    .dl-card {
+      position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: .9rem;
+      padding: 2rem; background: var(--surface-2);
+      border: 1px solid var(--line); border-radius: var(--radius-lg);
+      transition: border-color .2s;
+    }
+    .dl-card.is-recommended { border-color: var(--red); }
+    .dl-icon {
+      display: grid; place-items: center; width: 3rem; height: 3rem;
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      color: var(--red-soft);
+    }
+    .dl-icon .icon { width: 1.5rem; height: 1.5rem; }
+    .dl-reco { font: 500 .72rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--red-soft); }
+    .dl-title { font-family: var(--font-display); font-stretch: 110%; font-weight: 800; font-size: 1.4rem; line-height: 1.1; text-transform: uppercase; }
+    .dl-meta { font: 500 .8rem/1.5 var(--font-mono); color: var(--muted); }
+    .dl-card .btn { margin-top: auto; align-self: stretch; }
+    @media (max-width: 700px) { .dl-grid { grid-template-columns: minmax(0, 1fr); } }
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     .footer { border-top: 1px solid var(--line); padding: clamp(3rem, 6vw, 4.5rem) 0 2rem; }
@@ -803,7 +822,38 @@
         <p class="plans-note">Al pulsar Comprar se abre WhatsApp con tu plan ya escrito.</p>
       </div>
     </section>
-    <!-- @section:download -->
+    <!-- DESCARGA -->
+    <section class="section section--band" id="download" aria-labelledby="download-title">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <p class="eyebrow">Descarga</p>
+          <h2 class="h2" id="download-title">Cóndor Play</h2>
+          <p class="lede">Disponible para Android y Windows. Compatible con teléfonos, tablets, Android TV Box y PC de escritorio.</p>
+        </div>
+
+        <div class="dl-grid reveal">
+          <article class="dl-card" data-platform="android">
+            <span class="dl-icon"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>
+            <p class="dl-reco" hidden>Recomendado para tu dispositivo</p>
+            <h3 class="dl-title">Android y Android TV</h3>
+            <p class="dl-meta">Android v1.3.49 · Android 7.0+ · ~40 MB</p>
+            <a class="btn btn-primary btn-lg" href="https://github.com/Medina07P/Condor-Play/releases/download/v1.3.49tv/app-release.apk" download>
+              <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Descargar APK
+            </a>
+          </article>
+
+          <article class="dl-card" data-platform="windows">
+            <span class="dl-icon"><svg class="icon" aria-hidden="true"><use href="#i-windows"/></svg></span>
+            <p class="dl-reco" hidden>Recomendado para tu dispositivo</p>
+            <h3 class="dl-title">Windows</h3>
+            <p class="dl-meta">Windows v3.10.4 · Win 10/11 · 64-bit</p>
+            <a class="btn btn-ghost btn-lg" href="https://github.com/Medina07P/Condor-Play/releases/download/v3.10.4/condorplay-3.10.4.exe" download>
+              <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Descargar EXE
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- FOOTER -->
@@ -949,7 +999,14 @@
           });
         });
       }
-      /* @js:download */
+      /* Descarga: resalta la tarjeta de la plataforma del visitante (la otra sigue visible) */
+      const ua = navigator.userAgent || '';
+      const platform = /Android/i.test(ua) ? 'android' : /Windows/i.test(ua) ? 'windows' : null;
+      const card = platform && document.querySelector(`.dl-card[data-platform="${platform}"]`);
+      if (card) {
+        card.classList.add('is-recommended');
+        card.querySelector('.dl-reco').hidden = false;
+      }
     })();
   </script>
 </body>
