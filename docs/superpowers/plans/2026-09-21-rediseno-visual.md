@@ -10,6 +10,29 @@
 
 Spec de referencia: `docs/superpowers/specs/2026-09-21-rediseno-visual-design.md`.
 
+## Desviaciones aprobadas (posteriores a este documento)
+
+Tras completar las Tareas 1-8, un hallazgo del hook de diseño de Impeccable llevó a
+preguntarle al usuario por 4 puntos concretos del plan original. Estas decisiones
+**reemplazan** el texto correspondiente más abajo (Tarea 4 y la firma en "Sistema
+visual" del spec); si este plan se re-ejecutara tal cual, reintroduciría las tres
+primeras:
+
+1. **`.phone-body`**: sombra neutra de elevación (`rgba(0,0,0,.65)`) en vez del
+   resplandor rojo `rgba(236,27,46,.30)` que describen la Tarea 4 y el spec.
+2. **Barra lateral roja ("side-tab")**: solo en `.osd` (el banner de canal, la
+   firma). Se quitó de `.hero-status`. El plan original la ponía en ambos.
+3. **Tira de canales**: estática, con una sola lista y scroll manual
+   (`overflow-x: auto`, `tabindex="0"`), **sin** animación automática ni copia
+   duplicada para el bucle. El plan original (Tarea 4) especificaba un marquee
+   con `animation: strip 48s linear infinite` y 2 listas — eso ya no existe.
+4. **Instrument Sans** se confirmó como decisión intencional (no es una desviación
+   de contenido, pero quedó registrada como excepción en `.impeccable/config.json`
+   junto con la barra lateral del punto 2).
+
+Ambas excepciones de diseño quedan documentadas en `.impeccable/config.json`
+(`detector.ignoreValues`).
+
 ## Global Constraints
 
 Cada tarea las cumple implícitamente.
